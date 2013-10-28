@@ -14,7 +14,11 @@ public class DeviceManager {
 		System.out.println("Device Registered with ID:" + device.getDeviceID() + ", ip address: " + device.getIpAddress()+", port number:" + device.getPortNumber());
 	}
 	
-	//TODO: need to add device monitor
+	
+	
+	public void checkPingDevice(String deviceId){
+		Device device = mapOfDevices.get(deviceId);
+	}
 	
 	
 
