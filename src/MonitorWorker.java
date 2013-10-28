@@ -6,11 +6,9 @@ public class MonitorWorker extends Thread{
 	int howOftenToMonitorInMilliSeconds;
 	
 	public MonitorWorker(Device deviceToMonitor, DeviceManager deviceManger, int howOftenToMonitorInMilliSeconds){
-	
 		this.deviceToMonitor = deviceToMonitor;
 		this.deviceManager = deviceManger;
 		this.howOftenToMonitorInMilliSeconds = howOftenToMonitorInMilliSeconds;
-		this.start();
 	}
 	
 

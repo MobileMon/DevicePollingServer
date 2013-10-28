@@ -27,6 +27,7 @@ public class DeviceManager {
 		
 		System.out.println("Device: "+ device.getDeviceID() + "will be monitored every " + whenToMonitor/1000 + " seconds");
 		MonitorWorker monitorWorker = new MonitorWorker(device, this, whenToMonitor); //monitor every 60 seconds
+		monitorWorker.start();
 	}
 	
 	public void reportDeviceStatus(Device device, int deviceStatus){
