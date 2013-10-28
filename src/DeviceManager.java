@@ -1,18 +1,20 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class DeviceManager {
-	private ArrayList<Device>listOfDevices;
+	private HashMap<String,Device>mapOfDevices;
 
 	public DeviceManager() {
-		this.listOfDevices = new ArrayList<Device>();
+		this.mapOfDevices = new HashMap<String,Device>();
 	}
 	
 	
 	public void registerDevice(Device device){
-		listOfDevices.add(device);
+		mapOfDevices.put(device.getDeviceID(),device);
 		System.out.println("Device Registered with ID:" + device.getDeviceID() + ", ip address: " + device.getIpAddress()+", port number:" + device.getPortNumber());
 	}
+	
+	//TODO: need to add device monitor
 	
 	
 
