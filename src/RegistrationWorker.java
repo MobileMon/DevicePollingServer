@@ -59,6 +59,7 @@ public class RegistrationWorker extends Thread {
 			
 			try {
 				clientSocket = mSocket.accept();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("Could not connect to socket");
