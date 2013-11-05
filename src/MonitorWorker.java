@@ -56,8 +56,8 @@ public class MonitorWorker extends Thread{
 				
 				socketServer = new Socket(this.deviceToMonitor.getIpAddress(),this.deviceToMonitor.getPortNumber());
 				timer.hasConnected = true;
-				//TODO: GETTING HUNG UP HERE WHEN DEVICE LOSES CONNECTIVITY
-			   } catch (UnknownHostException e) {
+
+			} catch (UnknownHostException e) {
 				   System.out.println("Unknown host " + e.getMessage());
 					//if unresponsive
 					this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_UNRESPONSIVE);
