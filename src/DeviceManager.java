@@ -16,9 +16,16 @@ public class DeviceManager {
 	
 	
 	public void registerDevice(Device device){
-		mapOfDevices.put(device.getDeviceID(),device);
-		System.out.println("Device Registered with ID:" + device.getDeviceID() + ", ip address: " + device.getIpAddress()+", port number:" + device.getPortNumber());
-		this.monitorDevice(device.getDeviceID());
+		
+		if (mapOfDevices.get(device.getDeviceID()) != null){
+			System.out.println("Not registering because device already registered!");
+		}
+		else{
+			mapOfDevices.put(device.getDeviceID(),device);
+			System.out.println("Device Registered with ID:" + device.getDeviceID() + ", ip address: " + device.getIpAddress()+", port number:" + device.getPortNumber());
+			this.monitorDevice(device.getDeviceID());
+		}
+
 	}
 	
 	public void monitorDevice(String deviceId){
