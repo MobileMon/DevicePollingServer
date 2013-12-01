@@ -67,16 +67,21 @@ public class RegistrationWorker implements Runnable {
          * in.close(); } catch (IOException e) { //Client disconnected
          * System.out.println("Client disconnected."); break; }
          */
-        //String line = "";
+        // String line = "";
         BufferedReader in = null;
         try {
           in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+          // TODO: need to add a device type to the protocol as the first line.
+          // Pass that into the adapter factory call.
           String ipAddress = in.readLine();
           int portNumber = Integer.parseInt(in.readLine());
-          String deviceID = in.readLine();
+          String deviceId = in.readLine();
 
-          Device device = new Device(ipAddress, portNumber, deviceID);
+          IDevice device = DeviceAdapterFactory.forType(null);
+          device.setIpAddress(ipAddress);
+          device.setPortNumber(portNumber);
+          device.setDeviceId(deviceId);
           deviceManager.registerDevice(device);
 
         }

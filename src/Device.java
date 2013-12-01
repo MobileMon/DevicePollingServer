@@ -1,36 +1,31 @@
+public class Device implements IDevice {
 
-public class Device {
-	
-	private String ipAddress;
-	private int portNumber;
-	private String deviceID;
-	
-	
-	
-	
-	
-	public Device(String ipAddress, int portNumber, String deviceID) {
-		this.ipAddress = ipAddress;
-		this.portNumber = portNumber;
-		this.deviceID = deviceID;
-	}
-	public String getIpAddress() {
-		return ipAddress;
-	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-	public int getPortNumber() {
-		return portNumber;
-	}
-	public void setPortNumber(int portNumber) {
-		this.portNumber = portNumber;
-	}
-	public String getDeviceID() {
-		return deviceID;
-	}
-	public void setDeviceID(String deviceID) {
-		this.deviceID = deviceID;
-	}
+  private String ipAddress;
+  private int portNumber;
+  private String deviceId;
+
+  public String getIpAddress() {
+    return ipAddress;
+  }
+
+  public void setIpAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+  }
+
+  public int getPortNumber() {
+    return portNumber;
+  }
+
+  public void setPortNumber(int portNumber) {
+    this.portNumber = portNumber;
+  }
+
+  public String getDeviceId() {
+    return deviceId;
+  }
+
+  public void setDeviceId(String deviceId) {
+    this.deviceId = deviceId;
+  }
 
 }
