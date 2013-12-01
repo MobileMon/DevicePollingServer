@@ -15,16 +15,21 @@ public class DeviceManager {
 
   public static final int DEVICE_STATUS_NOT_OKAY = 3;
 
-  private final HashMap<String, IDevice> devices;
+  private final HashMap<String, IDevice> devices = new HashMap<String, IDevice>();
 
   private final ExecutorService registrationExec = Executors.newSingleThreadExecutor();
 
   private final ExecutorService monitors = Executors.newCachedThreadPool();
 
-  /** Constructs a <code>DeviceManager</code>. */
-  public DeviceManager() {
-    this.devices = new HashMap<String, IDevice>();
+  /** Start managing devices. This should only ever be called once per manager, and only before it is stopped. */
+  public void start() {
     this.registrationExec.submit(new RegistrationWorker(this));
+  }
+
+  /** Stop managing devices. This should only ever be called once per manager, and only after it is started. */
+  public void stop() {
+    this.registrationExec.shutdown();
+    this.monitors.shutdown();
   }
 
   public void registerDevice(final IDevice device) {
