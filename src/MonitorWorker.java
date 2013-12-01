@@ -5,26 +5,33 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.TimerTask;
 
-public class MonitorWorker implements Runnable {
+public class MonitorWorker
+implements Runnable {
 
-  IDevice deviceToMonitor;
-  DeviceManager deviceManager;
-  int howOftenToMonitorInMilliSeconds;
+  protected final IDevice deviceToMonitor;
 
-  public MonitorWorker(IDevice deviceToMonitor, DeviceManager deviceManger, int howOftenToMonitorInMilliSeconds) {
-    this.deviceToMonitor = deviceToMonitor;
+  protected final DeviceManager deviceManager;
+
+  protected final int howOftenToMonitorInMilliSeconds;
+
+  public MonitorWorker(final IDevice argDeviceToMonitor, final DeviceManager deviceManger,
+    final int argHowOftenToMonitorInMilliSeconds) {
+    this.deviceToMonitor = argDeviceToMonitor;
     this.deviceManager = deviceManger;
-    this.howOftenToMonitorInMilliSeconds = howOftenToMonitorInMilliSeconds;
+    this.howOftenToMonitorInMilliSeconds = argHowOftenToMonitorInMilliSeconds;
   }
 
+  /** {@inheritDoc} */
+  @SuppressWarnings("resource")
   @Override
   public void run() {
+    // TODO: creating the server socket in a loop like this is a potentially fatal flaw that may explain why certain devices crap out right away
     // need to check device's status
     while (true) {
 
       try {
         // sleep until its time to monitor again
-        Thread.sleep(howOftenToMonitorInMilliSeconds);
+        Thread.sleep(this.howOftenToMonitorInMilliSeconds);
       }
       catch (InterruptedException e) {
         System.out.println(e.getMessage());
@@ -37,15 +44,17 @@ public class MonitorWorker implements Runnable {
         final TimerExtension timer = new TimerExtension();
         timer.hasConnected = false;
         timer.schedule(new TimerTask() {
+
           @Override
           public void run() {
             // if device doesn't connect in alloted time it's unresponsive
             if (timer.hasConnected == false) {
-              deviceManager.reportDeviceStatus(deviceToMonitor, DeviceManager.DEVICE_STATUS_UNRESPONSIVE);
+              MonitorWorker.this.deviceManager.reportDeviceStatus(MonitorWorker.this.deviceToMonitor,
+                DeviceManager.DEVICE_STATUS_UNRESPONSIVE);
             }
 
           }
-        }, howOftenToMonitorInMilliSeconds);
+        }, this.howOftenToMonitorInMilliSeconds);
 
         socketServer = new Socket(this.deviceToMonitor.getIpAddress(), this.deviceToMonitor.getPortNumber());
         timer.hasConnected = true;
@@ -55,11 +64,13 @@ public class MonitorWorker implements Runnable {
         System.out.println("Unknown host " + e.getMessage());
         // if unresponsive
         this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_UNRESPONSIVE);
+        continue;
       }
       catch (IOException e) {
         System.out.println("IO Exception" + e.getMessage());
         // if unresponsive
         this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_UNRESPONSIVE);
+        continue;
       }
 
       String isDeviceOkay = "";

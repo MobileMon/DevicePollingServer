@@ -1,31 +1,49 @@
-public class Device implements IDevice {
+/**
+ * This is the default implementation of a device.
+ */
+public class Device
+implements IDevice {
 
   private String ipAddress;
+
   private int portNumber;
+
   private String deviceId;
 
+  /** {@inheritDoc} */
+  @Override
   public String getIpAddress() {
-    return ipAddress;
+    return this.ipAddress;
   }
 
-  public void setIpAddress(String ipAddress) {
-    this.ipAddress = ipAddress;
+  /** {@inheritDoc} */
+  @Override
+  public void setIpAddress(final String argIpAddress) {
+    this.ipAddress = argIpAddress;
   }
 
+  /** {@inheritDoc} */
+  @Override
   public int getPortNumber() {
-    return portNumber;
+    return this.portNumber;
   }
 
-  public void setPortNumber(int portNumber) {
-    this.portNumber = portNumber;
+  /** {@inheritDoc} */
+  @Override
+  public void setPortNumber(final int argPortNumber) {
+    this.portNumber = argPortNumber;
   }
 
+  /** {@inheritDoc} */
+  @Override
   public String getDeviceId() {
-    return deviceId;
+    return this.deviceId;
   }
 
-  public void setDeviceId(String deviceId) {
-    this.deviceId = deviceId;
+  /** {@inheritDoc} */
+  @Override
+  public void setDeviceId(final String argDeviceId) {
+    this.deviceId = argDeviceId;
   }
 
 }
