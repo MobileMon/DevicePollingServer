@@ -6,142 +6,108 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class RegistrationWorker extends Thread {
+public class RegistrationWorker
+implements Runnable {
 
-	ServerSocket mSocket;
-	int mPortNumber = 4000;
-	DeviceManager deviceManager;
+  protected ServerSocket mSocket;
 
-	public RegistrationWorker(DeviceManager deviceManger) {
-		
-		
-		this.deviceManager = deviceManger;
-		
-		boolean isPortAvailable = false;
-		
-		while (!isPortAvailable){
+  protected int mPortNumber = 4000;
 
-		try {
-			mSocket = new ServerSocket(mPortNumber);
-			isPortAvailable = true;
-		} catch (IOException e) {
-		
-			mPortNumber++;
-			
-			if (mPortNumber > 7000){
-				System.out.println("Could not open a socket");
-				System.exit(-1);
-			}
-		}
-		}
-	}
+  protected final DeviceManager deviceManager;
 
-	@Override
-	public void run() {
+  public RegistrationWorker(final DeviceManager deviceManger) {
+    this.deviceManager = deviceManger;
+    boolean isPortAvailable = false;
+    while (!isPortAvailable) {
+      try {
+        this.mSocket = new ServerSocket(this.mPortNumber);
+        isPortAvailable = true;
+      }
+      catch (IOException e) {
+        this.mPortNumber++;
+        if (this.mPortNumber > 7000) {
+          System.out.println("Could not open a socket");
+          System.exit(-1);
+        }
+      }
+    }
+  }
 
-		
-		
-		
-		InetAddress ip = null;
-		try {
-			ip = InetAddress.getLocalHost();
-		} catch (UnknownHostException e1) {
-		}
-		System.out.println("Registration Worker IP address : " + ip.getHostAddress());
-		System.out.println("Registration Worker Listening on port: "+ mPortNumber);
+  /** {@inheritDoc} */
+  @Override
+  public void run() {
+    try {
+      InetAddress ip = null;
+      try {
+        ip = InetAddress.getLocalHost();
+      }
+      catch (UnknownHostException e1) {
+        // Should never occur.
+        e1.printStackTrace();
+        return;
+      }
+      System.out.println("Registration Worker IP address : " + ip.getHostAddress());
+      System.out.println("Registration Worker Listening on port: " + this.mPortNumber);
 
-	
-		while (true) {
-			
-			
-			//accept requests
-			Socket clientSocket = null;
-			
-			try {
-				clientSocket = mSocket.accept();
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Could not connect to socket");
-			}
-			
-			
-			
-			//read from socket
-		/*	try {
-	            BufferedReader in = 
-	            new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-	            String deviceId = in.readLine();
-	            deviceId = in.readLine();
-	            deviceId = in.readLine();
-	            deviceId = in.readLine();
-	            deviceId = in.readLine();
-	            
-	            //TODO: HANDLE REGISTRATION
-	            System.out.println("Device Registration ID: " + deviceId);
-	           // in.close();
-	        } catch (IOException e) {
-	            //Client disconnected
-	            System.out.println("Client disconnected.");
-	            break;
-	        }*/
-			String line = "";
-			BufferedReader in = null;
-			try {
-				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+      while (true) {
 
-				String ipAddress = in.readLine();
-				int portNumber = Integer.parseInt(in.readLine());
-				String deviceID = in.readLine();
+        // accept requests
+        try (Socket clientSocket = this.mSocket.accept()) {
 
-				Device device = new Device(ipAddress,portNumber,deviceID);
-				deviceManager.registerDevice(device);
-				
+          // read from socket
+          /*
+           * try { BufferedReader in = new BufferedReader(new
+           * InputStreamReader(clientSocket.getInputStream())); String deviceId =
+           * in.readLine(); deviceId = in.readLine(); deviceId = in.readLine();
+           * deviceId = in.readLine(); deviceId = in.readLine();
+           * 
+           * //TODO: HANDLE REGISTRATION
+           * System.out.println("Device Registration ID: " + deviceId); //
+           * in.close(); } catch (IOException e) { //Client disconnected
+           * System.out.println("Client disconnected."); break; }
+           */
+          // String line = "";
+          BufferedReader in = null;
+          try {
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-			    System.out.println("Read failed");
-		        System.exit(-1);
-			}
-	
-			//close client
-			try {
-				clientSocket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+            // TODO: need to add a device type to the protocol as the first line.
+            // Pass that into the adapter factory call.
+            String ipAddress = in.readLine();
+            int portNumber = Integer.parseInt(in.readLine());
+            String deviceId = in.readLine();
 
-	}
-	
-	
-	public void cleanUp(){
-		
-		
-		
-		
-		
-		//close socket
-		try {
-			mSocket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		//stop thread
-				try {
-					this.join();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				this.interrupt();
-	}
-	
-	
-	
-	
+            IDevice device = DeviceAdapterFactory.forType(null);
+            device.setIpAddress(ipAddress);
+            device.setPortNumber(portNumber);
+            device.setDeviceId(deviceId);
+            this.deviceManager.registerDevice(device);
+
+          }
+          catch (IOException e1) {
+            // TODO Auto-generated catch block
+            System.out.println("Read failed");
+            System.exit(-1);
+          }
+
+          // close client
+          clientSocket.close();
+        }
+        catch (IOException e) {
+          e.printStackTrace();
+          System.out.println("Could not connect to socket");
+        }
+      }
+    }
+    finally {
+      // close socket
+      try {
+        this.mSocket.close();
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
 }
