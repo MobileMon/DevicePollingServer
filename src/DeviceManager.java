@@ -55,9 +55,9 @@ public class DeviceManager {
       + " seconds");
     MonitorWorker monitorWorker = new MonitorWorker(device, this, whenToMonitor); // monitor
                                                                                   // between
-                                                                                  // 20
+                                                                                  // 1
                                                                                   // and
-                                                                                  // 60
+                                                                                  // 10
                                                                                   // seconds
     this.monitors.submit(monitorWorker);
   }
