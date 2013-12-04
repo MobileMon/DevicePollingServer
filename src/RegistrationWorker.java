@@ -50,52 +50,23 @@ implements Runnable {
       System.out.println("Registration Worker Listening on port: " + this.mPortNumber);
 
       while (true) {
-
         // accept requests
         try (Socket clientSocket = this.mSocket.accept()) {
-
-          // read from socket
-          /*
-           * try { BufferedReader in = new BufferedReader(new
-           * InputStreamReader(clientSocket.getInputStream())); String deviceId =
-           * in.readLine(); deviceId = in.readLine(); deviceId = in.readLine();
-           * deviceId = in.readLine(); deviceId = in.readLine();
-           * 
-           * //TODO: HANDLE REGISTRATION
-           * System.out.println("Device Registration ID: " + deviceId); //
-           * in.close(); } catch (IOException e) { //Client disconnected
-           * System.out.println("Client disconnected."); break; }
-           */
-          // String line = "";
-          BufferedReader in = null;
-          try {
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
+          try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
             // TODO: need to add a device type to the protocol as the first line.
             // Pass that into the adapter factory call.
-            String ipAddress = in.readLine();
-            int portNumber = Integer.parseInt(in.readLine());
-            String deviceId = in.readLine();
-
             IDevice device = DeviceAdapterFactory.forType(null);
-            device.setIpAddress(ipAddress);
-            device.setPortNumber(portNumber);
-            device.setDeviceId(deviceId);
+            device.setUp(in);
             this.deviceManager.registerDevice(device);
-
           }
           catch (IOException e1) {
-            // TODO Auto-generated catch block
             System.out.println("Read failed");
-            System.exit(-1);
+            e1.printStackTrace();
           }
-
-          // close client
-          clientSocket.close();
         }
         catch (IOException e) {
-          e.printStackTrace();
           System.out.println("Could not connect to socket");
+          e.printStackTrace();
         }
       }
     }
@@ -109,5 +80,4 @@ implements Runnable {
       }
     }
   }
-
 }

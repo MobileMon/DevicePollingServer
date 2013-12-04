@@ -1,7 +1,10 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+
 /**
  * This is the default implementation of a device.
  */
-public class Device
+public class DefaultDevice
 implements IDevice {
 
   private String ipAddress;
@@ -44,6 +47,17 @@ implements IDevice {
   @Override
   public void setDeviceId(final String argDeviceId) {
     this.deviceId = argDeviceId;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void setUp(final BufferedReader argReader) throws IOException {
+    String ip = argReader.readLine();
+    int port = Integer.parseInt(argReader.readLine());
+    String device = argReader.readLine();
+    setIpAddress(ip);
+    setPortNumber(port);
+    setDeviceId(device);
   }
 
 }
