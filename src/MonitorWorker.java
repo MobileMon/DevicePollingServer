@@ -6,6 +6,9 @@ import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This is a worker runnable that monitors a single device.
+ */
 public class MonitorWorker
 implements Runnable {
 

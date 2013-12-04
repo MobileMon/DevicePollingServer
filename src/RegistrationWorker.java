@@ -6,6 +6,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * This is a worker runnable that handles new registrations.
+ */
 public class RegistrationWorker
 implements Runnable {
 
