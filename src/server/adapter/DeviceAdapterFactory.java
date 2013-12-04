@@ -15,7 +15,7 @@ public final class DeviceAdapterFactory {
    * accessible default constructor.
    * @return an implementation of <tt>IDevice</tt> appropriate for the type.
    */
-  public static IDeviceAdapter forType(final String argType) {
+  public static IDeviceAdapter makeAdapter(final String argType) {
     final IDeviceAdapter device;
     if ((argType == null) || argType.trim().isEmpty()) {
       device = new DefaultDeviceAdapter();
