@@ -13,7 +13,8 @@ import server.controller.worker.RegistrationWorker;
  * The device manager is responsible for handling device registration and maintaining devices as they connect and
  * disconnect.
  */
-public class DeviceManager {
+public class DeviceManager
+implements AutoCloseable {
 
   public static final int DEVICE_STATUS_OK = 1;
 
@@ -27,13 +28,14 @@ public class DeviceManager {
 
   private final ExecutorService monitors = Executors.newCachedThreadPool();
 
-  /** Start managing devices. This should only ever be called once per manager, and only before it is stopped. */
-  public void start() {
+  /** Constructs a <code>DeviceManager</code> and start managing devices.. */
+  public DeviceManager() {
     this.registrationExec.submit(new RegistrationWorker(this));
   }
 
-  /** Stop managing devices. This should only ever be called once per manager, and only after it is started. */
-  public void stop() {
+  /** {@inheritDoc} */
+  @Override
+  public void close() {
     this.registrationExec.shutdown();
     this.monitors.shutdown();
   }

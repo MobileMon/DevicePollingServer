@@ -10,19 +10,15 @@ import server.controller.DeviceManager;
  */
 public class ServerMain {
 
+  /** Program entry point. */
   public static void main(final String[] args) {
-    DeviceManager deviceManger = new DeviceManager();
-    try {
-      deviceManger.start();
+    try (DeviceManager deviceManger = new DeviceManager()) {
       BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-      // pause the program so we can see what its doing
+      // pause the program so we can see what it is doing.
       stdin.readLine();
     }
     catch (Exception ex) {
       ex.printStackTrace();
-    }
-    finally {
-      deviceManger.stop();
     }
   }
 
