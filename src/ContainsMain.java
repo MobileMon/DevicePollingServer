@@ -1,19 +1,22 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.UnknownHostException;
 
 public class ContainsMain {
 
-  public static void main(final String[] args) throws UnknownHostException, IOException {
+  public static void main(final String[] args) {
     DeviceManager deviceManger = new DeviceManager();
-    deviceManger.start();
-
-    // pause the program so we can see what its doing
-    BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-    stdin.readLine();
-
-    deviceManger.stop();
+    try {
+      deviceManger.start();
+      BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+      // pause the program so we can see what its doing
+      stdin.readLine();
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
+    finally {
+      deviceManger.stop();
+    }
   }
 
 }
