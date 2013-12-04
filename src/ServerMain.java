@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 /**
  * This class is the program entry point. It starts the server and pauses the main thread so it does not exit.<br>
  */
-public class ContainsMain {
+public class ServerMain {
 
   public static void main(final String[] args) {
     DeviceManager deviceManger = new DeviceManager();
