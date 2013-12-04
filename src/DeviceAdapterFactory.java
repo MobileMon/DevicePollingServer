@@ -11,15 +11,15 @@ public final class DeviceAdapterFactory {
    * accessible default constructor.
    * @return an implementation of <tt>IDevice</tt> appropriate for the type.
    */
-  public static IDevice forType(final String argType) {
-    final IDevice device;
+  public static IDeviceAdapter forType(final String argType) {
+    final IDeviceAdapter device;
     if ((argType == null) || argType.trim().isEmpty()) {
-      device = new DefaultDevice();
+      device = new DefaultDeviceAdapter();
     }
     else {
       try {
         Class<?> type = Class.forName(argType);
-        device = (IDevice) type.newInstance();
+        device = (IDeviceAdapter) type.newInstance();
       }
       catch (Exception ex) {
         throw (ex instanceof RuntimeException) ? (RuntimeException) ex : new RuntimeException(ex);

@@ -8,13 +8,13 @@ import java.util.TimerTask;
 public class MonitorWorker
 implements Runnable {
 
-  protected final IDevice deviceToMonitor;
+  protected final IDeviceAdapter deviceToMonitor;
 
   protected final DeviceManager deviceManager;
 
   protected final int howOftenToMonitorInMilliSeconds;
 
-  public MonitorWorker(final IDevice argDeviceToMonitor, final DeviceManager deviceManger,
+  public MonitorWorker(final IDeviceAdapter argDeviceToMonitor, final DeviceManager deviceManger,
     final int argHowOftenToMonitorInMilliSeconds) {
     this.deviceToMonitor = argDeviceToMonitor;
     this.deviceManager = deviceManger;

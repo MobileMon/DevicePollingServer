@@ -5,7 +5,7 @@ import java.io.IOException;
  * Interface for an object that adapts a device, structuring input and output to be compatible with both the server and
  * the client.
  */
-public interface IDevice {
+public interface IDeviceAdapter {
 
   String getIpAddress();
 

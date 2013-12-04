@@ -15,7 +15,7 @@ public class DeviceManager {
 
   public static final int DEVICE_STATUS_NOT_OKAY = 3;
 
-  private final HashMap<String, IDevice> devices = new HashMap<String, IDevice>();
+  private final HashMap<String, IDeviceAdapter> devices = new HashMap<String, IDeviceAdapter>();
 
   private final ExecutorService registrationExec = Executors.newSingleThreadExecutor();
 
@@ -32,7 +32,7 @@ public class DeviceManager {
     this.monitors.shutdown();
   }
 
-  public void registerDevice(final IDevice device) {
+  public void registerDevice(final IDeviceAdapter device) {
     if (this.devices.get(device.getDeviceId()) != null) {
       System.out.println("Not registering because device already registered!");
     }
@@ -45,7 +45,7 @@ public class DeviceManager {
   }
 
   public void monitorDevice(final String deviceId) {
-    IDevice device = this.devices.get(deviceId);
+    IDeviceAdapter device = this.devices.get(deviceId);
 
     Random r = new Random();
     // int whenToMonitor=r.nextInt(60000-20000) + 20000;
@@ -62,7 +62,7 @@ public class DeviceManager {
     this.monitors.submit(monitorWorker);
   }
 
-  public void reportDeviceStatus(final IDevice device, final int deviceStatus) {
+  public void reportDeviceStatus(final IDeviceAdapter device, final int deviceStatus) {
     if (deviceStatus == DeviceManager.DEVICE_STATUS_OK) {
       System.out.println("Device: " + device.getDeviceId() + " is OK");
     }

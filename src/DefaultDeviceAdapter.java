@@ -4,8 +4,8 @@ import java.io.IOException;
 /**
  * This is the default implementation of a device.
  */
-public class DefaultDevice
-implements IDevice {
+public class DefaultDeviceAdapter
+implements IDeviceAdapter {
 
   private String ipAddress;
 
