@@ -35,8 +35,7 @@ implements Runnable {
       catch (IOException e) {
         this.mPortNumber++;
         if (this.mPortNumber > 7000) {
-          System.out.println("Could not open a socket");
-          System.exit(-1);
+          throw new RuntimeException(e);
         }
       }
     }
