@@ -1,3 +1,5 @@
+package server.controller.worker;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,6 +7,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import server.adapter.IDeviceAdapter;
+import server.controller.DeviceManager;
 
 /**
  * This is a worker runnable that monitors a single device.

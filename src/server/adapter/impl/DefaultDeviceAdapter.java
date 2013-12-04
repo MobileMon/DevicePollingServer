@@ -1,5 +1,9 @@
+package server.adapter.impl;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import server.adapter.IDeviceAdapter;
 
 /**
  * This is the default implementation of a device.

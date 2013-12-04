@@ -1,5 +1,9 @@
+package server;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
+import server.controller.DeviceManager;
 
 /**
  * This class is the program entry point. It starts the server and pauses the main thread so it does not exit.<br>

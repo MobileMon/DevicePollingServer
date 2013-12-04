@@ -1,3 +1,7 @@
+package server.adapter;
+
+import server.adapter.impl.DefaultDeviceAdapter;
+
 /**
  * This is a factory which is responsible for taking device types and providing an implementation-specific adapter that
  * can communicate with that device.<br/>

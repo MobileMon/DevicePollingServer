@@ -1,7 +1,13 @@
+package server.controller;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import server.adapter.IDeviceAdapter;
+import server.controller.worker.MonitorWorker;
+import server.controller.worker.RegistrationWorker;
 
 /**
  * The device manager is responsible for handling device registration and maintaining devices as they connect and
