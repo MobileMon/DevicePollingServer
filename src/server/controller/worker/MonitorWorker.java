@@ -40,7 +40,6 @@ implements Runnable {
   @SuppressWarnings("resource")
   @Override
   public void run() {
-    // TODO: creating the server socket in a loop like this is a potentially fatal flaw that may explain why certain devices crap out right away
     // need to check device's status
     while (true) {
 
@@ -50,6 +49,7 @@ implements Runnable {
       }
       catch (InterruptedException e) {
         System.out.println(e.getMessage());
+        break;
       }
 
       // connect to client
@@ -88,31 +88,19 @@ implements Runnable {
         continue;
       }
 
-      String isDeviceOkay = "";
       BufferedReader in = null;
 
       try {
         in = new BufferedReader(new InputStreamReader(socketServer.getInputStream()));
 
-        isDeviceOkay = in.readLine();
-        int deviceOkayInt = Integer.parseInt(isDeviceOkay);
-
-        if (deviceOkayInt == 1) {
-
-          // if ok
-          this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_OK);
-        }
-        else {
-          // if not ok
-          this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_NOT_OKAY);
-        }
-
+        int deviceStatus = this.deviceToMonitor.getDeviceStatus(in);
+        // Report the device status. Note that the status must be an integer this method accepts.
+        this.deviceManager.reportDeviceStatus(this.deviceToMonitor, deviceStatus);
       }
       catch (Exception e) {
         System.out.println(e.getMessage());
         // if not ok
         this.deviceManager.reportDeviceStatus(this.deviceToMonitor, DeviceManager.DEVICE_STATUS_NOT_OKAY);
-
       }
 
       try {

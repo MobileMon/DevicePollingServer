@@ -64,4 +64,12 @@ implements IDeviceAdapter {
     setDeviceId(device);
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public int getDeviceStatus(final BufferedReader argReader) throws IOException {
+    String statusRaw = argReader.readLine();
+    int status = Integer.parseInt(statusRaw);
+    return status;
+  }
+
 }
