@@ -73,6 +73,8 @@ implements Runnable {
 
         socketServer = new Socket(this.deviceToMonitor.getIpAddress(), this.deviceToMonitor.getPortNumber());
         timer.hasConnected = true;
+        timer.cancel();
+        timer.purge();
 
       }
       catch (UnknownHostException e) {
