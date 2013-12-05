@@ -11,15 +11,9 @@ public interface IDeviceAdapter {
 
   String getIpAddress();
 
-  void setIpAddress(String argIpAddress);
-
   int getPortNumber();
 
-  void setPortNumber(int argPortNumber);
-
   String getDeviceId();
-
-  void setDeviceId(String argDeviceId);
 
   /**
    * Set data on this object from the input reader.

@@ -25,20 +25,8 @@ implements IDeviceAdapter {
 
   /** {@inheritDoc} */
   @Override
-  public void setIpAddress(final String argIpAddress) {
-    this.ipAddress = argIpAddress;
-  }
-
-  /** {@inheritDoc} */
-  @Override
   public int getPortNumber() {
     return this.portNumber;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void setPortNumber(final int argPortNumber) {
-    this.portNumber = argPortNumber;
   }
 
   /** {@inheritDoc} */
@@ -49,19 +37,13 @@ implements IDeviceAdapter {
 
   /** {@inheritDoc} */
   @Override
-  public void setDeviceId(final String argDeviceId) {
-    this.deviceId = argDeviceId;
-  }
-
-  /** {@inheritDoc} */
-  @Override
   public void setUp(final BufferedReader argReader) throws IOException {
     String ip = argReader.readLine();
     int port = Integer.parseInt(argReader.readLine());
     String device = argReader.readLine();
-    setIpAddress(ip);
-    setPortNumber(port);
-    setDeviceId(device);
+    this.ipAddress = ip;
+    this.portNumber = port;
+    this.deviceId = device;
   }
 
   /** {@inheritDoc} */
