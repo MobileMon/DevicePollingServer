@@ -40,8 +40,6 @@ public final class DeviceAdapterFactory {
     if (instance == null) {
       instance = new DeviceAdapterFactory();
     }
-
     return instance;
   }
-
 }
