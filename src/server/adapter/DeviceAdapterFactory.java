@@ -1,5 +1,7 @@
 package server.adapter;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import server.adapter.impl.DefaultDeviceAdapter;
 
 /**
@@ -8,6 +10,39 @@ import server.adapter.impl.DefaultDeviceAdapter;
  */
 public final class DeviceAdapterFactory {
 
+  /** Used to track whether the singleton has already been created. */
+  private static final AtomicBoolean instantiated = new AtomicBoolean();
+
+  private static final DeviceAdapterFactory instance;
+
+  static {
+    try {
+      String implName = System.getProperty(DeviceAdapterFactory.class.getName());
+      if ((implName == null) || implName.trim().isEmpty()) {
+        instance = new DeviceAdapterFactory();
+      }
+      else {
+        Class<?> impl = Class.forName(implName);
+        instance = (DeviceAdapterFactory) impl.newInstance();
+      }
+    }
+    catch (Exception ex) {
+      throw new ExceptionInInitializerError(ex);
+    }
+  }
+
+  /** Get the singleton instance of the factory. */
+  public static DeviceAdapterFactory getInstance() {
+    return instance;
+  }
+
+  /** Constructs a <code>DeviceAdapterFactory</code>. */
+  protected DeviceAdapterFactory() {
+    if (!instantiated.compareAndSet(false, true)) {
+      throw new IllegalStateException("Cannot create multiple singletons");
+    }
+  }
+
   /**
    * Given a string description of a device type, locate and create the proper implementation for that type.
    * 
@@ -15,9 +50,6 @@ public final class DeviceAdapterFactory {
    * accessible default constructor.
    * @return an implementation of <tt>IDevice</tt> appropriate for the type.
    */
-
-  private static DeviceAdapterFactory instance;
-
   public IDeviceAdapter makeAdapter(final String argType) {
     final IDeviceAdapter deviceAdapter;
     if ((argType == null) || argType.trim().isEmpty()) {
@@ -35,11 +67,4 @@ public final class DeviceAdapterFactory {
     return deviceAdapter;
   }
 
-  //singleton pattern
-  public static synchronized DeviceAdapterFactory getInstance() {
-    if (instance == null) {
-      instance = new DeviceAdapterFactory();
-    }
-    return instance;
-  }
 }
