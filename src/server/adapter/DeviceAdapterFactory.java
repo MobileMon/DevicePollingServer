@@ -15,26 +15,33 @@ public final class DeviceAdapterFactory {
    * accessible default constructor.
    * @return an implementation of <tt>IDevice</tt> appropriate for the type.
    */
-  public static IDeviceAdapter makeAdapter(final String argType) {
-    final IDeviceAdapter device;
+
+  private static DeviceAdapterFactory instance;
+
+  public IDeviceAdapter makeAdapter(final String argType) {
+    final IDeviceAdapter deviceAdapter;
     if ((argType == null) || argType.trim().isEmpty()) {
-      device = new DefaultDeviceAdapter();
+      deviceAdapter = new DefaultDeviceAdapter();
     }
     else {
       try {
         Class<?> type = Class.forName(argType);
-        device = (IDeviceAdapter) type.newInstance();
+        deviceAdapter = (IDeviceAdapter) type.newInstance();
       }
       catch (Exception ex) {
         throw (ex instanceof RuntimeException) ? (RuntimeException) ex : new RuntimeException(ex);
       }
     }
-    return device;
+    return deviceAdapter;
   }
 
-  /** Constructs a <code>DeviceAdapterFactory</code>. */
-  private DeviceAdapterFactory() {
-    throw new UnsupportedOperationException();
+  //singleton pattern
+  public static synchronized DeviceAdapterFactory getInstance() {
+    if (instance == null) {
+      instance = new DeviceAdapterFactory();
+    }
+
+    return instance;
   }
 
 }

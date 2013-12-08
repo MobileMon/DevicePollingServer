@@ -63,7 +63,8 @@ implements Runnable {
           try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
             // TODO: need to add a device type to the protocol as the first line.
             // Pass that into the adapter factory call.
-            IDeviceAdapter device = DeviceAdapterFactory.makeAdapter(null);
+            DeviceAdapterFactory factory = new DeviceAdapterFactory();
+            IDeviceAdapter device = factory.makeAdapter(null);
             device.setUp(in);
             this.deviceManager.registerDevice(device);
           }
